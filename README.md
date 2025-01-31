@@ -1,6 +1,6 @@
 # Barcode & QR Code Generator
 
-![Demo](https://via.placeholder.com/800x400.png?text=Barcode+%26+QR+Code+Generator+Demo)
+![Demo](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fqr-code&psig=AOvVaw0yjjt0JGDaGNO7cg1b_m6n&ust=1738420626388000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJDGmNKXoIsDFQAAAAAdAAAAABAE)
 
 A Streamlit web application for generating barcodes and QR codes with customizable options.
 
