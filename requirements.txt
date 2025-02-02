@@ -1,3 +1,3 @@
-#streamlit
-#python-barcode
-#qrcode[pil]
+streamlit==1.32.2
+treepoem==3.25.0
+qrcode[pil]==7.4.2
