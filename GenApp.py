@@ -1,6 +1,5 @@
 import streamlit as st
-import barcode
-from barcode.writer import ImageWriter
+import treepoem
 import qrcode
 from io import BytesIO
 import re
@@ -11,20 +10,18 @@ def sanitize_input(input_string, max_length=100):
 
 def validate_barcode_type(barcode_type):
     valid_types = ["code128", "ean13", "ean8", "upca"]
-    if barcode_type in valid_types:
-        return barcode_type
-    return "code128"
+    return barcode_type if barcode_type in valid_types else "code128"
 
 def validate_color(color):
-    if re.match(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color):
-        return color
-    return "#000000"
+    return color if re.match(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color) else "#000000"
 
 def genbar(data, barcode_type):
-    barcode_class = barcode.get_barcode_class(barcode_type)
-    barcode_instance = barcode_class(data, writer=ImageWriter())
+    image = treepoem.generate_barcode(
+        barcode_type=barcode_type,
+        data=data
+    )
     buffer = BytesIO()
-    barcode_instance.write(buffer)
+    image.save(buffer, format="PNG")
     buffer.seek(0)
     return buffer
 
@@ -53,8 +50,8 @@ if code_type == "Barcode":
                 barcode_image = genbar(sanitized_data, validated_barcode_type)
                 st.image(barcode_image, caption="Generated Barcode", use_column_width=True)
                 st.download_button(label="Download Barcode", data=barcode_image.getvalue(), file_name="barcode.png", mime="image/png")
-            except:
-                st.error("An error occurred while generating the barcode. Please try again.")
+            except Exception as e:
+                st.error(f"An error occurred while generating the barcode: {str(e)}")
         else:
             st.warning("Please enter valid data for the barcode.")
 else:
@@ -71,8 +68,8 @@ else:
                 qr = make_qr(sanitized_text, validated_color, validated_bg)
                 st.image(qr, caption="Your QR", use_column_width=True)
                 st.download_button(label="Download QR", data=qr, file_name="qr.png", mime="image/png")
-            except:
-                st.error("An error occurred while generating the QR code. Please try again.")
+            except Exception as e:
+                st.error(f"An error occurred while generating the QR code: {str(e)}")
         else:
             st.warning("Enter text for the QR code.")
 
